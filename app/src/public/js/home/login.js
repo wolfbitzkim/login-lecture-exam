@@ -3,7 +3,7 @@
 // #은 tag의 id를 가져온다는 뜻
 const id = document.querySelector("#id"),
   psword = document.querySelector("#psword"),
-  loginBtn = document.querySelector("button");
+  loginBtn = document.querySelector("#button");
 
 
 loginBtn.addEventListener("click", login);
