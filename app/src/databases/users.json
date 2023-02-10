@@ -10,9 +10,11 @@
     "min",
     "ju",
     "chang",
-    "john"
+    "john",
+    "kim123"
   ],
   "psword": [
+    "1234",
     "1234",
     "1234",
     "1234",
@@ -36,6 +38,7 @@
     "suji",
     "jusun",
     "mimi",
-    "lee"
+    "lee",
+    null
   ]
 }
