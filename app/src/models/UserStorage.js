@@ -1,15 +1,26 @@
 "use strict";
 
+const fs = require("fs").promises;
+
+
+
 class UserStorage {
-  // # 은닉화 외부 참조 불가
-  static #users = {
-    id: ["kim", "lee", "park"],
-    psword: ["1234", "1234", "12345"],
-    name: ["T1", "T2", "T3"]
-  };
+  // # -> 은닉화, private 을 나타냄
+  // 은닉화 하면 에러 발생해서 # 빼고 함수명 변경 함 getUserInfo -> getUserInfos
+  static getUserInfos(data, id) {
+    const users = JSON.parse(data);
+    const idx = users.id.indexOf(id);
+    const usersKeys = Object.keys(users); // => {id, password, name}
+    const userInfo = usersKeys.reduce((newUsers, info) => {
+      newUsers[info] = users[info][idx];
+      return newUsers;
+    }, {});
+
+    return userInfo;
+  }
 
   static getUsers(...fields) {
-    const users = this.#users;
+    // const users = this.#users;
     const newUsers = fields.reduce((newUsers, fields) => {
       if (users.hasOwnProperty(fields)) {
         newUsers[fields] = users[fields];
@@ -20,18 +31,17 @@ class UserStorage {
   }
 
   static getUserInfo(id) {
-    const users = this.#users;
-    const idx = users.id.indexOf(id);
-    const usersKeys = Object.keys(users); // => {id, password, name}
-    const userInfo = usersKeys.reduce((newUsers, info) => {
-      newUsers[info] = users[info][idx];
-      return newUsers;
-    }, {});
-    return userInfo;
+    return fs
+      .readFile("./src/databases/users.json")
+      .then((data) => {
+        return this.getUserInfos(data, id);
+      })
+      .catch(console.error);
   }
 
+
   static save(userInfo) {
-    const users = this.#users;
+    // const users = this.#users;
     users.id.push(userInfo.id);
     users.name.push(userInfo.name);
     users.psword.push(userInfo.psword);
